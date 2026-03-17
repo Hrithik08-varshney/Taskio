@@ -1,10 +1,19 @@
-import { FlatList, Text, View } from "react-native";
+import { FlatList, Pressable, Text, View } from "react-native";
 import { styles } from "./GoalsList.styles";
 
-export default function GoalsList({ goals }) {
+export default function GoalsList({ goals, setGoals }) {
+  const deleteGoal = (deleteItem) => {
+    setGoals(goals.filter((goal) => goal.key !== deleteItem.key));
+  };
+
   const renderGoal = ({ item }) => (
     <View style={styles.goalItem}>
-      <Text style={styles.goalText}>{item.text}</Text>
+      <Pressable
+        android_ripple={{ color: "#dddddd" }}
+        onPress={() => deleteGoal(item)}
+      >
+        <Text style={styles.goalText}>{item.text}</Text>
+      </Pressable>
     </View>
   );
 
