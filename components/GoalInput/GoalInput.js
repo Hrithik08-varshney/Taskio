@@ -1,8 +1,22 @@
-import { Button, TextInput, View } from "react-native";
+import {
+  Button,
+  Modal,
+  TextInput,
+  View,
+  SafeAreaView,
+  Text,
+  Image,
+} from "react-native";
 import { styles } from "./GoalInput.styles";
 import { useState } from "react";
 
-export default function GoalInput({ onPress }) {
+const goalsIcon = require("../../assets/GoalsIcon.png");
+
+export default function GoalInput({
+  onPress,
+  isModalVisible,
+  setIsModalVisible,
+}) {
   const [inputText, setInputText] = useState("");
 
   function handleTextInputChange(text) {
@@ -16,14 +30,29 @@ export default function GoalInput({ onPress }) {
   };
 
   return (
-    <View style={styles.inputContainer}>
-      <TextInput
-        style={styles.textInput}
-        placeholder="Enter text here"
-        onChangeText={handleTextInputChange}
-        value={inputText}
-      />
-      <Button title="Submit" onPress={() => handleInputText(inputText)} />
-    </View>
+    <Modal visible={isModalVisible} animationType="fade" transparent={true}>
+      <View style={styles.modalOverlay}>
+        <View style={styles.inputContainer}>
+          <Image
+            source={goalsIcon}
+            style={styles.goalImage}
+          />
+          <Text style={styles.modalTitle}>Add Your Goal</Text>
+          <TextInput
+            style={styles.textInput}
+            placeholder="Enter text here"
+            onChangeText={handleTextInputChange}
+            value={inputText}
+          />
+          <View style={styles.buttonContainer}>
+            <Button
+              title="Add Goal"
+              onPress={() => handleInputText(inputText)}
+            />
+            <Button title="Cancel" onPress={() => setIsModalVisible(false)} />
+          </View>
+        </View>
+      </View>
+    </Modal>
   );
 }
